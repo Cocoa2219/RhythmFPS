@@ -78,7 +78,15 @@ public class EventHandler(RhythmFPS plugin)
             var lastDirName = new DirectoryInfo(directory).Name;
             var songDir = $"{lastDirName}/{fileName}";
 
-            Songs.Add(new Song(Path.Combine(directory, files.First(x => x.EndsWith(".ogg"))), songDir, files.First(x => x.EndsWith(".json")), songSettings.Lyrics.ToList(), songSettings.LyricsTiming.ToList(), songSettings.Timing.ToList()));
+            Songs.Add(new Song
+            {
+                SongPath = Path.Combine(directory, files.First(x => x.EndsWith(".ogg"))),
+                SongDirectory = songDir,
+                ConfigPath = files.First(x => x.EndsWith(".json")),
+                Lyrics = songSettings.Lyrics.ToList(),
+                LyricsTiming = songSettings.LyricsTiming.ToList(),
+                Timing = songSettings.Timing.ToList()
+            });
 
             Log.Info($"{files.First(x => x.EndsWith(".ogg"))}을(를) 성공적으로 로드했습니다.");
         }
@@ -88,7 +96,6 @@ public class EventHandler(RhythmFPS plugin)
 
     internal void OnShooting(ShootingEventArgs ev)
     {
-        // Player.AddReservedSlot(ev.Player.UserId);
         if (ev.Player.SessionVariables.TryGetValue("IsRecording", out var songObj))
         {
             ev.Firearm.Ammo = ev.Firearm.MaxAmmo;
@@ -96,6 +103,13 @@ public class EventHandler(RhythmFPS plugin)
             var song = (Song)songObj;
 
             song.NextLyrics(ev.Player);
+        } else if (ev.Player.SessionVariables.TryGetValue("IsRecordingTiming", out songObj))
+        {
+            ev.Firearm.Ammo = ev.Firearm.MaxAmmo;
+
+            var song = (Song)songObj;
+
+            song.NextTiming(ev.Player);
         }
     }
 }

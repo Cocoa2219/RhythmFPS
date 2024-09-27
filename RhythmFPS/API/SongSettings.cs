@@ -6,11 +6,11 @@ namespace RhythmFPS.API;
 public class SongSettings(string[] Lyrics, long[] LyricsTiming, long[] Timing)
 {
     [Description("가사입니다.")]
-    public string[] Lyrics { get; set; }
+    public string[] Lyrics { get; set; } = Lyrics;
 
     [Description("가사의 타이밍입니다.")]
-    public long[] LyricsTiming { get; set; }
+    public long[] LyricsTiming { get; set; } = LyricsTiming;
 
     [Description("타이밍입니다.")]
-    public long[] Timing { get; set; }
+    public long[] Timing { get; set; } = Timing;
 }

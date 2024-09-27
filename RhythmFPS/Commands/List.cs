@@ -18,4 +18,5 @@ public class List : ICommand
     public string Command { get; } = "slist";
     public string[] Aliases { get; } = { "sl" };
     public string Description { get; } = "등록된 곡 목록을 보여줍니다.";
+    public bool SanitizeResponse { get; } = false;
 }
